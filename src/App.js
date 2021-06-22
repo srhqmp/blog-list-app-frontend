@@ -127,7 +127,7 @@ const App = () => {
           }
         }
       } else {
-        handleNotification(`You must sign in to delete a blog`, 'error')
+        handleNotification('You must sign in to delete a blog', 'error')
       }
     } catch (e) {
       handleNotification(e.response.data.error, 'error')

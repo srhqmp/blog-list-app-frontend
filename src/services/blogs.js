@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-anonymous-default-export */
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
@@ -38,5 +36,5 @@ const removeBlog = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`, config)
   return request.then((response) => response.data)
 }
-
+// eslint-disable-next-line
 export default { getAll, create, updateBlog, removeBlog, setToken }
