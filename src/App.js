@@ -89,7 +89,6 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisible()
       const newBlog = await blogService.create(blogObject)
-      console.log(newBlog)
       setBlogs(blogs.concat(newBlog))
       handleNotification(
         `a new blog ${newBlog.title} by ${newBlog.author} added`,
@@ -117,6 +116,24 @@ const App = () => {
     }
   }
 
+  const handleBlogRemove = async (blog) => {
+    try {
+      if (user) {
+        if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+          const request = await blogService.removeBlog(blog.id)
+          if (request) {
+            handleNotification(request, 'success')
+            setBlogs(blogs.filter((blogpost) => blogpost.id !== blog.id))
+          }
+        }
+      } else {
+        handleNotification(`You must sign in to delete a blog`, 'error')
+      }
+    } catch (e) {
+      handleNotification(e.response.data.error, 'error')
+    }
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -128,7 +145,13 @@ const App = () => {
       {user !== null && blogForm()}
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          updateBlog={updateBlog}
+          handleBlogRemove={handleBlogRemove}
+          user={user}
+        />
       ))}
     </div>
   )
