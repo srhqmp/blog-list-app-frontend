@@ -57,7 +57,8 @@ const App = () => {
       setUser(user)
       handleNotification(`Successfully logged in ${user.name}`, 'success')
     } catch (e) {
-      handleNotification(e.response.data.error, 'error')
+      console.log(e)
+      handleNotification('wrong credentials', 'error')
     }
   }
 
