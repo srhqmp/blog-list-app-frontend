@@ -11,13 +11,22 @@ describe('With initial blog post', () => {
     user: { name: 'Test Username' },
     likes: 500,
   }
-
+  const user = {
+    username: 'Test Username',
+    name: 'Test Name',
+  }
+  const mockUpdate = jest.fn()
+  const mockRemove = jest.fn()
   let component
 
   beforeEach(() => {
-    const mockFunc = jest.fn()
     component = render(
-      <Blog blog={blog} updateBlog={mockFunc} handleBlogRemove={mockFunc} />
+      <Blog
+        blog={blog}
+        updateBlog={mockUpdate}
+        handleBlogRemove={mockRemove}
+        user={user}
+      />
     )
   })
 
@@ -39,5 +48,17 @@ describe('With initial blog post', () => {
     const blogDetails = component.container.querySelector('.blogDetails')
     expect(blogDetails).not.toHaveStyle('display: none')
     expect(showButton).toHaveTextContent('hide')
+  })
+
+  test('like button event handler is fired twice after clicking it twice', () => {
+    const showButton = component.container.querySelector(
+      '#toggleVisibilityButton'
+    )
+    fireEvent.click(showButton)
+
+    const likeButton = component.container.querySelector('#likeButton')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+    expect(mockUpdate.mock.calls).toHaveLength(2)
   })
 })
