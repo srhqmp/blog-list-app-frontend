@@ -80,7 +80,10 @@ const App = () => {
 
   const loggedinUser = () => (
     <div>
-      {user.name} logged in <button onClick={handleLogout}>logout</button>
+      {user.name} logged in{' '}
+      <button id="logout-button" onClick={handleLogout}>
+        logout
+      </button>
     </div>
   )
 
@@ -119,16 +122,12 @@ const App = () => {
 
   const handleBlogRemove = async (blog) => {
     try {
-      if (user) {
-        if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-          const request = await blogService.removeBlog(blog.id)
-          if (request) {
-            handleNotification(request, 'success')
-            setBlogs(blogs.filter((blogpost) => blogpost.id !== blog.id))
-          }
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+        const request = await blogService.removeBlog(blog.id)
+        if (request) {
+          handleNotification(request, 'success')
+          setBlogs(blogs.filter((blogpost) => blogpost.id !== blog.id))
         }
-      } else {
-        handleNotification('You must sign in to delete a blog', 'error')
       }
     } catch (e) {
       handleNotification(e.response.data.error, 'error')

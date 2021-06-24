@@ -71,11 +71,12 @@ describe('Blog app', function () {
       })
 
       it('A user can like a blog', function () {
-        cy.contains('create new blog').click()
-        cy.get('#title').type('Test Like button')
-        cy.get('#author').type('Test Author')
-        cy.get('#url').type('Test URL')
-        cy.get('#create-blog').click()
+        const blog = {
+          title: 'Test Like',
+          author: 'Test Author',
+          url: 'Test Url',
+        }
+        cy.createABlog(blog)
 
         cy.get('#toggleVisibilityButton').click()
         cy.get('#likeButton').click().as('likeButton')
@@ -83,6 +84,45 @@ describe('Blog app', function () {
 
         cy.get('@likeButton').click()
         cy.get('@likes').should('contain', '2 likes')
+      })
+
+      it('Ensure a user who created a blog can delete it', function () {
+        const blog = {
+          title: 'Test Remove',
+          author: 'Test Author',
+          url: 'Test Url',
+        }
+        cy.createABlog(blog)
+
+        cy.get('#toggleVisibilityButton').click()
+        cy.get('#removeButton').click()
+        cy.get('.success').should(
+          'contain',
+          'Successfully deleted blog Test Remove'
+        )
+      })
+
+      it.only('Ensure a user cannot delete blog of others', function () {
+        const blog = {
+          title: 'Test Blog User 1',
+          author: 'User 1',
+          url: 'Test Url',
+        }
+        cy.createABlog(blog)
+        cy.get('#logout-button').click()
+
+        const user2 = {
+          username: 'user2',
+          name: 'USER 2',
+          password: 'password',
+        }
+        cy.request('POST', 'http://localhost:3003/api/users/', user2)
+        cy.login(user2)
+
+        cy.get('.blogTitle').should('contain', 'Test Blog User 1')
+        cy.get('.blogAuthor').should('contain', 'User 1')
+        cy.get('#toggleVisibilityButton').click()
+        cy.get('#removeButton').should('not.exist')
       })
     })
   })
