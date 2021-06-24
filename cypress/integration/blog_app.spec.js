@@ -102,7 +102,7 @@ describe('Blog app', function () {
         )
       })
 
-      it.only('Ensure a user cannot delete blog of others', function () {
+      it('Ensure a user cannot delete blog of others', function () {
         const blog = {
           title: 'Test Blog User 1',
           author: 'User 1',
@@ -123,6 +123,66 @@ describe('Blog app', function () {
         cy.get('.blogAuthor').should('contain', 'User 1')
         cy.get('#toggleVisibilityButton').click()
         cy.get('#removeButton').should('not.exist')
+      })
+
+      it('Blogs are ordered according to likes with the blog with most likes being first', function () {
+        const blogs = [
+          {
+            title: 'Test Blog 1',
+            author: 'Test Author',
+            url: 'Test Url',
+          },
+          {
+            title: 'Test Blog 2',
+            author: 'Test Author',
+            url: 'Test Url',
+          },
+          {
+            title: 'Test Blog 3',
+            author: 'Test Author',
+            url: 'Test Url',
+          },
+        ]
+        cy.createABlog(blogs[0])
+        cy.get('.success').should(
+          'contain',
+          'a new blog Test Blog 1 by Test Author added'
+        )
+        cy.createABlog(blogs[1])
+        cy.get('.success').should(
+          'contain',
+          'a new blog Test Blog 2 by Test Author added'
+        )
+        cy.createABlog(blogs[2])
+        cy.get('.success').should(
+          'contain',
+          'a new blog Test Blog 3 by Test Author added'
+        )
+
+        cy.get('.blogTitle')
+          .contains('Test Blog 3')
+          .parent()
+          .parent()
+          .as('blog3')
+        cy.get('@blog3').contains('show').click()
+        cy.get('@blog3').contains('like').as('likeButton3')
+        cy.get('@likeButton3').click().click().click()
+
+        cy.get('.blogTitle')
+          .contains('Test Blog 2')
+          .parent()
+          .parent()
+          .as('blog1')
+        cy.get('@blog1').contains('show').click()
+        cy.get('@blog1').contains('like').as('likeButton1')
+        cy.get('@likeButton1').click()
+
+        cy.reload()
+
+        cy.get('.blogTitle').then((blogs) => {
+          const order = ['Test Blog 3', 'Test Blog 2', 'Test Blog 1']
+          blogs.map((i, blog) => expect(blog.innerText).to.equal(order[i]))
+        })
       })
     })
   })
