@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -7,14 +8,13 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 
+import { setNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
-  const [notification, setNotification] = useState({
-    message: null,
-    classification: null,
-  })
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService
@@ -33,18 +33,8 @@ const App = () => {
     }
   }, [])
 
-  const handleNotification = (message, classification) => {
-    const notif = {
-      message,
-      classification,
-    }
-    setNotification(notif)
-    setTimeout(() => {
-      setNotification({
-        message: null,
-        classification: null,
-      })
-    }, 5000)
+  const handleNotification = (notification, time) => {
+    dispatch(setNotification(notification, time))
   }
 
   const loginFormRef = useRef()
@@ -55,10 +45,17 @@ const App = () => {
       const user = await loginService.login(userObject)
       window.localStorage.setItem('BlogAppLoggedinUser', JSON.stringify(user))
       setUser(user)
-      handleNotification(`Successfully logged in ${user.name}`, 'success')
+      const notification = {
+        message: `Successfully logged in ${user.name}`,
+        classification: 'success',
+      }
+      handleNotification(notification, 5)
     } catch (e) {
-      console.log(e)
-      handleNotification('wrong credentials', 'error')
+      const notification = {
+        message: 'wrong credentials',
+        classification: 'error',
+      }
+      handleNotification(notification, 5)
     }
   }
 
@@ -71,10 +68,18 @@ const App = () => {
   const handleLogout = () => {
     try {
       window.localStorage.clear()
-      handleNotification(`Logged out ${user.name}`, 'success')
+      const notification = {
+        message: `Logged out ${user.name}`,
+        classification: 'success',
+      }
+      handleNotification(notification, 5)
       setUser(null)
     } catch (e) {
-      handleNotification(e.response.data.error, 'error')
+      const notification = {
+        message: e.response.data.error,
+        classification: 'error',
+      }
+      handleNotification(notification, 5)
     }
   }
 
@@ -94,12 +99,17 @@ const App = () => {
       blogFormRef.current.toggleVisible()
       const newBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(newBlog))
-      handleNotification(
-        `a new blog ${newBlog.title} by ${newBlog.author} added`,
-        'success'
-      )
+      const notification = {
+        message: `a new blog ${newBlog.title} by ${newBlog.author} added`,
+        classification: 'success',
+      }
+      handleNotification(notification, 5)
     } catch (e) {
-      handleNotification(e.response.data.error, 'error')
+      const notification = {
+        message: e.response.data.error,
+        classification: 'error',
+      }
+      handleNotification(notification, 5)
     }
   }
 
@@ -116,7 +126,11 @@ const App = () => {
         blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
       )
     } catch (e) {
-      handleNotification(e.response.data.error, 'error')
+      const notification = {
+        message: e.response.data.error,
+        classification: 'error',
+      }
+      handleNotification(notification, 5)
     }
   }
 
@@ -125,22 +139,27 @@ const App = () => {
       if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
         const request = await blogService.removeBlog(blog.id)
         if (request) {
-          handleNotification(request, 'success')
+          const notification = {
+            message: request,
+            classification: 'success',
+          }
+          handleNotification(notification, 5)
           setBlogs(blogs.filter((blogpost) => blogpost.id !== blog.id))
         }
       }
     } catch (e) {
-      handleNotification(e.response.data.error, 'error')
+      const notification = {
+        message: e.response.data.error,
+        classification: 'error',
+      }
+      handleNotification(notification, 5)
     }
   }
 
   return (
     <div>
       <h2>blogs</h2>
-      <Notification
-        message={notification['message']}
-        classification={notification['classification']}
-      />
+      <Notification />
       {user === null ? loginForm() : loggedinUser()}
       {user !== null && blogForm()}
 

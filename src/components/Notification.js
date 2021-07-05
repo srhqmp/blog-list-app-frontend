@@ -1,8 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
 import PropType from 'prop-types'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ message, classification }) => {
-  return <div className={classification}>{message}</div>
+const Notification = () => {
+  const notification = useSelector((state) => state.notification)
+  return (
+    <div className={notification.classification}>{notification.message}</div>
+  )
 }
 
 Notification.propType = {
