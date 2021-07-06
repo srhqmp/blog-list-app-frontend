@@ -6,7 +6,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
-import Blog from './components/Blog'
+import Blogs from './components/Blogs'
 
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
@@ -140,7 +140,7 @@ const App = () => {
       <Notification />
       {user === null ? loginForm() : loggedinUser()}
       {user !== null && blogForm()}
-      <Blog user={user} />
+      <Blogs />
 
       {/* {blogs.map((blog) => (
         <Blog
