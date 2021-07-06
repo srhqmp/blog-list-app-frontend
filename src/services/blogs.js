@@ -22,7 +22,8 @@ const create = (blog) => {
   }
   const request = axios.post(baseUrl, blog, config)
   return request.then((response) => {
-    return response.data})
+    return response.data
+  })
 }
 
 const updateBlog = (id, blog) => {
@@ -35,7 +36,7 @@ const removeBlog = (id) => {
     headers: { Authorization: token },
   }
   const request = axios.delete(`${baseUrl}/${id}`, config)
-  return request.then((response) => response.data)
+  return request.then((response) => response.data).catch((e) => e)
 }
 // eslint-disable-next-line
 export default { getAll, create, updateBlog, removeBlog, setToken }

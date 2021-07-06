@@ -140,7 +140,7 @@ const App = () => {
       <Notification />
       {user === null ? loginForm() : loggedinUser()}
       {user !== null && blogForm()}
-      <Blogs />
+      <Blogs user={user} />
 
       {/* {blogs.map((blog) => (
         <Blog

@@ -9,9 +9,7 @@ const reducer = (state = [], action) => {
   case 'REMOVE_BLOG':
     return state.filter((blog) => blog.id !== action.content.id)
   case 'UPDATE_BLOG':
-    return state.map((blog) =>
-      blog.id === action.content.id ? action.content : blog
-    )
+    return state.map((blog) => blog.id === action.content.id ? action.content : blog)
   default:
     return state
   }
@@ -49,10 +47,10 @@ export const removeBlog = (id) => {
 
 export const updateBlog = (data) => {
   return async (dispatch) => {
-    const res = blogsService.updateBlog(data.id, data)
+    const res = await blogsService.updateBlog(data.id, data)
     dispatch({
       type: 'UPDATE_BLOG',
-      content: res.data,
+      content: res,
     })
   }
 }

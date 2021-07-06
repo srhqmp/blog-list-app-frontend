@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateBlog, removeBlog } from '../reducers/blogsReducer'
 
 const blogStyle = {
   paddingTop: 10,
@@ -10,9 +11,8 @@ const blogStyle = {
   width: '400px',
 }
 
-const BlogList = ({ blog }) => {
-  const user = true
-  // // const dispatch = useDispatch()
+const BlogList = ({ blog, user }) => {
+  const dispatch = useDispatch()
 
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -22,7 +22,13 @@ const BlogList = ({ blog }) => {
   }
 
   const handleLikes = () => {
-    console.log('hi')
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    dispatch(updateBlog(updatedBlog))
+  }
+
+  const handleRemoveBlog = () => {
+    const id = blog.id
+    dispatch(removeBlog(id))
   }
 
   return (
@@ -47,12 +53,7 @@ const BlogList = ({ blog }) => {
         </div>
         <div>{blog.user.name}</div>
         {user && user.username === blog.username ? (
-          <button
-            id="removeButton"
-            onClick={() => {
-              console.log('heyhey')
-            }}
-          >
+          <button id="removeButton" onClick={handleRemoveBlog}>
             remove
           </button>
         ) : (
@@ -63,9 +64,9 @@ const BlogList = ({ blog }) => {
   )
 }
 
-const Blogs = () => {
+const Blogs = ({ user }) => {
   const blogs = useSelector((state) => state.blogs)
-  return blogs.map((blog) => <BlogList key={blog.id} blog={blog} />)
+  return blogs.map((blog) => <BlogList key={blog.id} blog={blog} user={user} />)
 }
 
 export default Blogs
