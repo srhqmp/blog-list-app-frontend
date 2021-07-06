@@ -1,28 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import Blog from './components/Blog'
 
+import { initializeBlogs } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  // const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
+  // const blogs = useSelector(state => state.blogs)
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) =>
-        setBlogs(blogs.sort((a, b) => parseInt(b.likes) - parseInt(a.likes)))
-      )
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedinUser = window.localStorage.getItem('BlogAppLoggedinUser')
@@ -93,68 +91,48 @@ const App = () => {
   )
 
   const blogFormRef = useRef()
-
-  const addNewBlog = async (blogObject) => {
-    try {
-      blogFormRef.current.toggleVisible()
-      const newBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(newBlog))
-      const notification = {
-        message: `a new blog ${newBlog.title} by ${newBlog.author} added`,
-        classification: 'success',
-      }
-      handleNotification(notification, 5)
-    } catch (e) {
-      const notification = {
-        message: e.response.data.error,
-        classification: 'error',
-      }
-      handleNotification(notification, 5)
-    }
-  }
-
   const blogForm = () => (
     <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-      <BlogForm addNewBlog={addNewBlog} />
+      <BlogForm blogFormRef={blogFormRef} />
     </Togglable>
   )
 
-  const updateBlog = async (blog) => {
-    try {
-      const updatedBlog = await blogService.updateBlog(blog.id, blog)
-      setBlogs(
-        blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
-      )
-    } catch (e) {
-      const notification = {
-        message: e.response.data.error,
-        classification: 'error',
-      }
-      handleNotification(notification, 5)
-    }
-  }
+  // const updateBlog = async (blog) => {
+  //   try {
+  //     const updatedBlog = await blogService.updateBlog(blog.id, blog)
+  //     setBlogs(
+  //       blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+  //     )
+  //   } catch (e) {
+  //     const notification = {
+  //       message: e.response.data.error,
+  //       classification: 'error',
+  //     }
+  //     handleNotification(notification, 5)
+  //   }
+  // }
 
-  const handleBlogRemove = async (blog) => {
-    try {
-      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-        const request = await blogService.removeBlog(blog.id)
-        if (request) {
-          const notification = {
-            message: request,
-            classification: 'success',
-          }
-          handleNotification(notification, 5)
-          setBlogs(blogs.filter((blogpost) => blogpost.id !== blog.id))
-        }
-      }
-    } catch (e) {
-      const notification = {
-        message: e.response.data.error,
-        classification: 'error',
-      }
-      handleNotification(notification, 5)
-    }
-  }
+  // const handleBlogRemove = async (blog) => {
+  //   try {
+  //     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+  //       const request = await blogService.removeBlog(blog.id)
+  //       if (request) {
+  //         const notification = {
+  //           message: request,
+  //           classification: 'success',
+  //         }
+  //         handleNotification(notification, 5)
+  //         setBlogs(blogs.filter((blogpost) => blogpost.id !== blog.id))
+  //       }
+  //     }
+  //   } catch (e) {
+  //     const notification = {
+  //       message: e.response.data.error,
+  //       classification: 'error',
+  //     }
+  //     handleNotification(notification, 5)
+  //   }
+  // }
 
   return (
     <div>
@@ -162,8 +140,9 @@ const App = () => {
       <Notification />
       {user === null ? loginForm() : loggedinUser()}
       {user !== null && blogForm()}
+      <Blog user={user} />
 
-      {blogs.map((blog) => (
+      {/* {blogs.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
@@ -171,7 +150,7 @@ const App = () => {
           handleBlogRemove={handleBlogRemove}
           user={user}
         />
-      ))}
+      ))} */}
     </div>
   )
 }

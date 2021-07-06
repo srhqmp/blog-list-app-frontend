@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-const Blog = ({ blog, updateBlog, handleBlogRemove, user }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-    width: '400px',
-  }
+const blogStyle = {
+  paddingTop: 10,
+  paddingLeft: 2,
+  border: 'solid',
+  borderWidth: 1,
+  marginBottom: 5,
+  width: '400px',
+}
+
+const Blog = (user) => {
+  const blogs = useSelector((state) => state.blogs)
+  // const user = true
+  // // const dispatch = useDispatch()
 
   const [visible, setVisible] = useState(false)
-
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisible = () => {
@@ -19,14 +23,16 @@ const Blog = ({ blog, updateBlog, handleBlogRemove, user }) => {
   }
 
   const handleLikes = () => {
-    blog.likes += 1
-    updateBlog(blog)
+    console.log('hi')
   }
 
-  return (
-    <div style={blogStyle}>
+  return blogs.map((blog) => (
+    <div style={blogStyle} key={blog.id}>
       <div>
-        <span className="blogTitle">{blog.title}</span>{' '}
+        <span className="blogTitle">
+          {blog.title}
+          {'hi'}
+        </span>{' '}
         <span className="blogAuthor">{blog.author}</span>
       </div>
       <button id="toggleVisibilityButton" onClick={toggleVisible}>
@@ -45,7 +51,7 @@ const Blog = ({ blog, updateBlog, handleBlogRemove, user }) => {
         </div>
         <div>{blog.user.name}</div>
         {user && user.username === blog.username ? (
-          <button id="removeButton" onClick={() => handleBlogRemove(blog)}>
+          <button id="removeButton" onClick={() => {}}>
             remove
           </button>
         ) : (
@@ -53,7 +59,7 @@ const Blog = ({ blog, updateBlog, handleBlogRemove, user }) => {
         )}
       </div>
     </div>
-  )
+  ))
 }
 
 export default Blog

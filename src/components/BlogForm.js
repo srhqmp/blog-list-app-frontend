@@ -1,20 +1,39 @@
 import React, { useState } from 'react'
 import PropType from 'prop-types'
+import { useDispatch } from 'react-redux'
 
-const BlogForm = ({ addNewBlog }) => {
+import { setNotification } from '../reducers/notificationReducer'
+import { addBlog } from '../reducers/blogsReducer'
+
+const BlogForm = ({ blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const dispatch = useDispatch()
+
   const handleNewBlog = (event) => {
     event.preventDefault()
-
     const blog = {
       title,
       author,
       url,
     }
-    addNewBlog(blog)
+    try {
+      blogFormRef.current.toggleVisible()
+      dispatch(addBlog(blog))
+      const notification = {
+        message: `a new blog ${blog.title} by ${blog.author} added`,
+        classification: 'success',
+      }
+      dispatch(setNotification(notification, 5))
+    } catch (e) {
+      const notification = {
+        message: e,
+        classification: 'error',
+      }
+      dispatch(setNotification(notification, 5))
+    }
     setTitle('')
     setAuthor('')
     setUrl('')
