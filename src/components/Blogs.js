@@ -10,9 +10,8 @@ const blogStyle = {
   width: '400px',
 }
 
-const Blog = (user) => {
-  const blogs = useSelector((state) => state.blogs)
-  // const user = true
+const BlogList = ({ blog }) => {
+  const user = true
   // // const dispatch = useDispatch()
 
   const [visible, setVisible] = useState(false)
@@ -26,13 +25,10 @@ const Blog = (user) => {
     console.log('hi')
   }
 
-  return blogs.map((blog) => (
-    <div style={blogStyle} key={blog.id}>
+  return (
+    <div style={blogStyle}>
       <div>
-        <span className="blogTitle">
-          {blog.title}
-          {'hi'}
-        </span>{' '}
+        <span className="blogTitle">{blog.title}</span>{' '}
         <span className="blogAuthor">{blog.author}</span>
       </div>
       <button id="toggleVisibilityButton" onClick={toggleVisible}>
@@ -51,7 +47,12 @@ const Blog = (user) => {
         </div>
         <div>{blog.user.name}</div>
         {user && user.username === blog.username ? (
-          <button id="removeButton" onClick={() => {}}>
+          <button
+            id="removeButton"
+            onClick={() => {
+              console.log('heyhey')
+            }}
+          >
             remove
           </button>
         ) : (
@@ -59,7 +60,12 @@ const Blog = (user) => {
         )}
       </div>
     </div>
-  ))
+  )
 }
 
-export default Blog
+const Blogs = () => {
+  const blogs = useSelector((state) => state.blogs)
+  return blogs.map((blog) => <BlogList key={blog.id} blog={blog} />)
+}
+
+export default Blogs
