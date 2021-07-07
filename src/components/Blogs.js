@@ -11,7 +11,7 @@ const blogStyle = {
   width: '400px',
 }
 
-const BlogList = ({ blog, user }) => {
+const BlogList = ({ blog, loggedinUser }) => {
   const dispatch = useDispatch()
 
   const [visible, setVisible] = useState(false)
@@ -45,14 +45,14 @@ const BlogList = ({ blog, user }) => {
         <div className="blogLikes">
           {blog.likes}
           {blog.likes > 1 ? ' likes' : ' like'}
-          {user && (
+          {loggedinUser && (
             <button id="likeButton" onClick={handleLikes}>
               like
             </button>
           )}
         </div>
-        <div>{blog.user.name}</div>
-        {user && user.username === blog.username ? (
+        <div>{blog.user.name || loggedinUser.name}</div>
+        {loggedinUser && loggedinUser.username === blog.username ? (
           <button id="removeButton" onClick={handleRemoveBlog}>
             remove
           </button>
@@ -64,9 +64,12 @@ const BlogList = ({ blog, user }) => {
   )
 }
 
-const Blogs = ({ user }) => {
+const Blogs = () => {
   const blogs = useSelector((state) => state.blogs)
-  return blogs.map((blog) => <BlogList key={blog.id} blog={blog} user={user} />)
+  const loggedinUser = useSelector((state) => state.loggedinUser)
+  return blogs.map((blog) => (
+    <BlogList key={blog.id} blog={blog} loggedinUser={loggedinUser} />
+  ))
 }
 
 export default Blogs

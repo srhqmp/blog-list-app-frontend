@@ -1,17 +1,32 @@
 import React, { useState } from 'react'
 import PropType from 'prop-types'
+import { useDispatch } from 'react-redux'
 
-const LoginForm = ({ login }) => {
+import { setNotification } from '../reducers/notificationReducer'
+import { login } from '../reducers/loginReducer'
+
+const LoginForm = ({ loginFormRef }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  const dispatch = useDispatch()
+
   const handleLogin = (event) => {
     event.preventDefault()
-    const user = {
+    const userObject = {
       username,
       password,
     }
-    login(user)
+    try {
+      loginFormRef.current.toggleVisible()
+      dispatch(login(userObject))
+    } catch (e) {
+      const notification = {
+        message: e,
+        classification: 'error',
+      }
+      dispatch(setNotification(notification, 5))
+    }
     setUsername('')
     setPassword('')
   }

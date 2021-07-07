@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropType from 'prop-types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { setNotification } from '../reducers/notificationReducer'
 import { addBlog } from '../reducers/blogsReducer'
@@ -10,6 +10,8 @@ const BlogForm = ({ blogFormRef }) => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const user = useSelector(state => state.loggedinUser)
+  console.log('blog form user:', user)
   const dispatch = useDispatch()
 
   const handleNewBlog = (event) => {

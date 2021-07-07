@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux'
 
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
+  const user = useSelector((state) => state.loggedinUser)
+
+  console.log('user from notif:', user)
   return (
     <div className={notification.classification}>{notification.message}</div>
   )
