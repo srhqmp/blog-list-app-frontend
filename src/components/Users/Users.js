@@ -1,5 +1,6 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUsers } from '../../reducers/usersReducer'
 
 const UserList = ({ user }) => {
   return (
@@ -11,6 +12,12 @@ const UserList = ({ user }) => {
 }
 
 const Users = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getUsers())
+  }, [dispatch])
+
   const users = useSelector((state) => state.users)
   if (users) {
     return (

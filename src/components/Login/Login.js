@@ -3,7 +3,7 @@ import LoginForm from './LoginForm'
 import Togglable from '../Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkLogin, logout } from '../../reducers/loginReducer'
-import { setNotification } from '../../reducers/notificationReducer'
+import { handleSuccess } from '../../reducers/notificationReducer'
 
 const Login = () => {
   const loggedinUser = useSelector((state) => state.loggedinUser)
@@ -14,23 +14,17 @@ const Login = () => {
   }, [dispatch])
 
   const handleLogout = () => {
-    window.localStorage.clear()
-    dispatch(
-      setNotification(
-        {
-          message: `Successfully logged out ${loggedinUser.username}`,
-          classification: 'success',
-        },
-        5
-      )
-    )
+    const message = `Successfully logged out ${loggedinUser.username}`
     dispatch(logout())
+    handleSuccess(dispatch, message)
   }
 
   const userLogout = () => (
     <div>
-      {`${loggedinUser.username}`}{' '}
-      <button onClick={handleLogout}>logout</button>
+      <div>{`${loggedinUser.name} logged in`}</div>
+      <div>
+        <button onClick={handleLogout}>logout</button>
+      </div>
     </div>
   )
 

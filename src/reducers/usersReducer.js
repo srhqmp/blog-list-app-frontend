@@ -1,4 +1,5 @@
 import usersService from '../services/users'
+import { handleError } from './notificationReducer'
 
 const reducer = (state = null, action) => {
   switch (action.type) {
@@ -12,16 +13,13 @@ const reducer = (state = null, action) => {
 export const getUsers = () => {
   return async (dispatch) => {
     try {
-      const users = await usersService.getAll()
-      if (users) {
-        dispatch({
-          type: 'GET_USERS',
-          content: users,
-        })
-        console.log('succss')
-      }
+      const response = await usersService.getAll()
+      dispatch({
+        type: 'GET_USERS',
+        content: response.data,
+      })
     } catch (e) {
-      console.log(e)
+      handleError(dispatch, e)
     }
   }
 }

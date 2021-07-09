@@ -59,6 +59,7 @@ export const login = (credentials) => {
 export const logout = () => {
   return (dispatch) => {
     try {
+      window.localStorage.clear()
       blogService.setToken(null)
       dispatch({
         type: 'LOGOUT',
