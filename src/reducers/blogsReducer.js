@@ -1,4 +1,5 @@
 import blogsService from '../services/blogs'
+import { handleSuccess, handleError } from './notificationReducer'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -19,47 +20,66 @@ const reducer = (state = [], action) => {
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
-    const blogs = await blogsService.getAll()
-    dispatch({
-      type: 'INIT_BLOGS',
-      content: blogs.sort((a, b) => parseInt(b.likes) - parseInt(a.likes)),
-    })
+    try {
+      const response = await blogsService.getAll()
+      dispatch({
+        type: 'INIT_BLOGS',
+        content: response.data.sort(
+          (a, b) => parseInt(b.likes) - parseInt(a.likes)
+        ),
+      })
+    } catch (e) {
+      handleError(dispatch, e)
+    }
   }
 }
 
 export const addBlog = (data) => {
   return async (dispatch) => {
     try {
-      const res = await blogsService.create(data)
-      console.log(res)
+      const response = await blogsService.create(data)
       dispatch({
         type: 'ADD_BLOG',
-        content: res,
+        content: response.data,
       })
-      console.log('succss')
+      const newBlog = response.data
+      const message = `a new blog ${newBlog.title} by ${newBlog.author} added`
+      handleSuccess(dispatch, message)
     } catch (e) {
-      console.log(e)
+      handleError(dispatch, e)
     }
   }
 }
 
 export const removeBlog = (id) => {
   return async (dispatch) => {
-    await blogsService.removeBlog(id)
-    dispatch({
-      type: 'REMOVE_BLOG',
-      content: { id },
-    })
+    try {
+      const response = await blogsService.removeBlog(id)
+      dispatch({
+        type: 'REMOVE_BLOG',
+        content: { id },
+      })
+      handleSuccess(dispatch, response.data)
+    } catch (e) {
+      handleError(dispatch, e)
+    }
   }
 }
 
 export const updateBlog = (data) => {
   return async (dispatch) => {
-    const res = await blogsService.updateBlog(data.id, data)
-    dispatch({
-      type: 'UPDATE_BLOG',
-      content: res,
-    })
+    try {
+      const response = await blogsService.updateBlog(data.id, data)
+      const updatedBlog = response.data
+      dispatch({
+        type: 'UPDATE_BLOG',
+        content: updatedBlog,
+      })
+      const message = `You liked ${updatedBlog.title} by ${updatedBlog.author}`
+      handleSuccess(dispatch, message)
+    } catch (e) {
+      handleError(dispatch, e)
+    }
   }
 }
 

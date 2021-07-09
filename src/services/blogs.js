@@ -9,37 +9,26 @@ const setToken = (newToken) => {
   }
 }
 
-const getAll = () => {
-  return axios.get(baseUrl).then((response) => {
-    return response.data
-  })
+const getAll = async () => {
+  return await axios.get(baseUrl)
 }
 
-const create = (blog) => {
+const create = async (blog) => {
   const config = {
     headers: { Authorization: token },
   }
-  return axios
-    .post(baseUrl, blog, config)
-    .then((response) => {
-      return response.data
-    })
-    .catch((e) => e)
+  return await axios.post(baseUrl, blog, config)
 }
 
-const updateBlog = (id, blog) => {
-  return axios.put(`${baseUrl}/${id}`, blog).then((response) => response.data)
+const updateBlog = async (id, blog) => {
+  return await axios.put(`${baseUrl}/${id}`, blog)
 }
 
-const removeBlog = (id) => {
-  console.log('token:', token)
+const removeBlog = async (id) => {
   const config = {
     headers: { Authorization: token },
   }
-  return axios
-    .delete(`${baseUrl}/${id}`, config)
-    .then((response) => response.data)
-    .catch((e) => e)
+  return await axios.delete(`${baseUrl}/${id}`, config)
 }
 // eslint-disable-next-line
 export default { getAll, create, updateBlog, removeBlog, setToken }

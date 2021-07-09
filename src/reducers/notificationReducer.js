@@ -5,12 +5,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'SET_NOTIFICATION':
-    return action.content
-  case 'CLEAR_NOTIFICATION':
-    return initialState
-  default:
-    return state
+    case 'SET_NOTIFICATION':
+      return action.content
+    case 'CLEAR_NOTIFICATION':
+      return initialState
+    default:
+      return state
   }
 }
 
@@ -33,6 +33,22 @@ export const setNotification = (content, time) => {
       })
     }, time * 1000)
   }
+}
+
+export const handleError = (dispatch, e) => {
+  const message = {
+    message: e.response.data,
+    classification: 'error',
+  }
+  dispatch(setNotification(message, 5))
+}
+
+export const handleSuccess = (dispatch, message) => {
+  const notification = {
+    message,
+    classification: 'success',
+  }
+  dispatch(setNotification(notification, 5))
 }
 
 // eslint-disable-next-line no-unused-vars

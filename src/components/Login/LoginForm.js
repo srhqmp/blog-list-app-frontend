@@ -12,6 +12,7 @@ const LoginForm = ({ loginFormRef }) => {
 
   const handleLogin = (e) => {
     e.preventDefault()
+
     const userObj = {
       username: usernameInput.value,
       password: passwordInput.value,

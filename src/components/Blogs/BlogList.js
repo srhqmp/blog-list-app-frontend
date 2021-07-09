@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { updateBlog, removeBlog } from '../reducers/blogsReducer'
+import { useDispatch } from 'react-redux'
+import { updateBlog, removeBlog } from '../../reducers/blogsReducer'
 
 const blogStyle = {
   paddingTop: 10,
@@ -34,7 +34,7 @@ const BlogList = ({ blog, loggedinUser }) => {
   return (
     <div style={blogStyle}>
       <div>
-        <span className="blogTitle">{blog.title}</span>{' '}
+        <span className="blogTitle">{blog.title}</span>
         <span className="blogAuthor">{blog.author}</span>
       </div>
       <button id="toggleVisibilityButton" onClick={toggleVisible}>
@@ -45,7 +45,7 @@ const BlogList = ({ blog, loggedinUser }) => {
         <div className="blogLikes">
           {blog.likes}
           {blog.likes > 1 ? ' likes' : ' like'}
-          {loggedinUser && (
+          {loggedinUser && loggedinUser.username !== blog.username && (
             <button id="likeButton" onClick={handleLikes}>
               like
             </button>
@@ -64,12 +64,4 @@ const BlogList = ({ blog, loggedinUser }) => {
   )
 }
 
-const Blogs = () => {
-  const blogs = useSelector((state) => state.blogs)
-  const loggedinUser = useSelector((state) => state.loggedinUser)
-  return blogs.map((blog) => (
-    <BlogList key={blog.id} blog={blog} loggedinUser={loggedinUser} />
-  ))
-}
-
-export default Blogs
+export default BlogList
