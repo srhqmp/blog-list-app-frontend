@@ -10,8 +10,7 @@ const setToken = (newToken) => {
 }
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then((response) => {
+  return axios.get(baseUrl).then((response) => {
     return response.data
   })
 }
@@ -20,8 +19,8 @@ const create = (blog) => {
   const config = {
     headers: { Authorization: token },
   }
-  const request = axios.post(baseUrl, blog, config)
-  return request
+  return axios
+    .post(baseUrl, blog, config)
     .then((response) => {
       return response.data
     })
@@ -29,16 +28,18 @@ const create = (blog) => {
 }
 
 const updateBlog = (id, blog) => {
-  const request = axios.put(`${baseUrl}/${id}`, blog)
-  return request.then((response) => response.data)
+  return axios.put(`${baseUrl}/${id}`, blog).then((response) => response.data)
 }
 
 const removeBlog = (id) => {
+  console.log('token:', token)
   const config = {
     headers: { Authorization: token },
   }
-  const request = axios.delete(`${baseUrl}/${id}`, config)
-  return request.then((response) => response.data).catch((e) => e)
+  return axios
+    .delete(`${baseUrl}/${id}`, config)
+    .then((response) => response.data)
+    .catch((e) => e)
 }
 // eslint-disable-next-line
 export default { getAll, create, updateBlog, removeBlog, setToken }

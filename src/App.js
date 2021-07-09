@@ -5,15 +5,16 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Blogs from './components/Blogs'
+import Users from './components/Users'
 
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { logout, checkLogin } from './reducers/loginReducer'
+import { getUsers } from './reducers/usersReducer'
 
 const App = () => {
   const user = useSelector((state) => state.loggedinUser)
   const dispatch = useDispatch()
-  console.log('app user:', user)
 
   const handleNotification = (notification, time) => {
     dispatch(setNotification(notification, time))
@@ -25,6 +26,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(checkLogin())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(getUsers())
   }, [dispatch])
 
   const loginFormRef = useRef()
@@ -76,6 +81,7 @@ const App = () => {
       {user && blogForm()}
       {user ? loggedinUser() : loginForm()}
       <Blogs user={user} />
+      <Users />
     </div>
   )
 }

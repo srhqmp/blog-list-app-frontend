@@ -19,6 +19,7 @@ export const checkLogin = () => {
   return async (dispatch) => {
     const user = JSON.parse(window.localStorage.getItem('BlogAppLoggedinUser'))
     if (user) {
+      blogService.setToken(user.token)
       dispatch({
         type: 'CHECK_LOGIN',
         content: user,
