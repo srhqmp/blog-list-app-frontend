@@ -30,12 +30,6 @@ const Blog = () => {
     dispatch(likeBlog(updatedBlog))
   }
 
-  const handleRemoveBlog = () => {
-    const id = blog.id
-    dispatch(removeBlog(id))
-    history.push('')
-  }
-
   const likeBtn = () => (
     <button id="likeButton" onClick={handleLikes}>
       like
@@ -52,6 +46,12 @@ const Blog = () => {
           likeBtn()}
       </span>
     )
+  }
+
+  const handleRemoveBlog = () => {
+    const id = blog.id
+    dispatch(removeBlog(id))
+    history.push('')
   }
 
   const removeBtn = () => {
