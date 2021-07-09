@@ -19,15 +19,17 @@ const reducer = (state = null, action) => {
 export const checkLogin = () => {
   return async (dispatch) => {
     try {
-      const user = JSON.parse(
-        window.localStorage.getItem('BlogAppLoggedinUser')
-      )
+      const user = window.localStorage.getItem('BlogAppLoggedinUser')
       if (user) {
+        const parsedUser = JSON.parse(user)
         blogService.setToken(user.token)
         dispatch({
           type: 'CHECK_LOGIN',
-          content: user,
+          content: parsedUser,
         })
+      } else {
+        window.localStorage.clear()
+        blogService.setToken(null)
       }
     } catch (e) {
       handleError(dispatch, e)

@@ -1,8 +1,9 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useField } from '../../hooks'
-
 import { login } from '../../reducers/loginReducer'
+
+import { Button } from '@material-ui/core'
 
 const LoginForm = ({ loginFormRef }) => {
   const dispatch = useDispatch()
@@ -26,14 +27,16 @@ const LoginForm = ({ loginFormRef }) => {
   return (
     <form onSubmit={handleLogin}>
       <div>
-        username:
+        username: {' '}
         <input {...usernameInput} required />
       </div>
       <div>
-        password:
+        password: {' '}
         <input {...passwordInput} required />
       </div>
-      <button>login</button>
+      <Button type="submit" color="primary" variant="contained">
+        login
+      </Button>
     </form>
   )
 }

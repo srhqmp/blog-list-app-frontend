@@ -14,6 +14,9 @@ const Blog = () => {
   const history = useHistory()
   const commentInput = useField('text')
 
+  const blogs = useSelector((state) => state.blogs)
+  const blog = blogs.find((blog) => blog.id === id)
+
   useEffect(() => {
     dispatch(checkLogin())
   }, [dispatch])
@@ -21,9 +24,6 @@ const Blog = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
-
-  const blogs = useSelector((state) => state.blogs)
-  const blog = blogs.find((blog) => blog.id === id)
 
   const handleLikes = () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }

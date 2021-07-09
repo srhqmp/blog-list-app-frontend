@@ -4,6 +4,7 @@ import Togglable from '../Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkLogin, logout } from '../../reducers/loginReducer'
 import { handleSuccess } from '../../reducers/notificationReducer'
+import { Button } from '@material-ui/core'
 
 const Login = () => {
   const loggedinUser = useSelector((state) => state.loggedinUser)
@@ -21,9 +22,10 @@ const Login = () => {
 
   const userLogout = () => (
     <span>
-      <span>{`${loggedinUser.name} logged in`}</span>
-      {' '}
-      <button onClick={handleLogout}>logout</button>
+      <span>{`${loggedinUser.name} logged in`}</span>{' '}
+      <Button onClick={handleLogout} color="primary" variant="contained">
+        logout
+      </Button>
     </span>
   )
 
