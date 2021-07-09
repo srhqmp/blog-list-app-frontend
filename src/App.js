@@ -4,6 +4,7 @@ import Notification from './components/Notification'
 import Login from './components/Login/Login'
 import Blogs from './components/Blogs/Blogs'
 import Users from './components/Users/Users'
+import User from './components/Users/User'
 
 const App = () => {
   return (
@@ -17,6 +18,9 @@ const App = () => {
         </Route>
         <Route exact path="/users">
           <Users />
+        </Route>
+        <Route exact path="/users/:id">
+          <User />
         </Route>
       </Switch>
     </Router>
