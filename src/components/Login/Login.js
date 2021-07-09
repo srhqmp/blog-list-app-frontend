@@ -20,12 +20,11 @@ const Login = () => {
   }
 
   const userLogout = () => (
-    <div>
-      <div>{`${loggedinUser.name} logged in`}</div>
-      <div>
-        <button onClick={handleLogout}>logout</button>
-      </div>
-    </div>
+    <span>
+      <span>{`${loggedinUser.name} logged in`}</span>
+      {' '}
+      <button onClick={handleLogout}>logout</button>
+    </span>
   )
 
   const loginFormRef = useRef()
@@ -35,7 +34,7 @@ const Login = () => {
     </Togglable>
   )
 
-  return <div>{loggedinUser ? userLogout() : loginForm()}</div>
+  return <span>{loggedinUser ? userLogout() : loginForm()}</span>
 }
 
 export default Login
