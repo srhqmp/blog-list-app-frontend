@@ -24,6 +24,10 @@ const updateBlog = async (id, blog) => {
   return await axios.put(`${baseUrl}/${id}`, blog)
 }
 
+const addComment = async (id, comment) => {
+  return await axios.put(`${baseUrl}/${id}/comments`, comment)
+}
+
 const removeBlog = async (id) => {
   const config = {
     headers: { Authorization: token },
@@ -31,4 +35,4 @@ const removeBlog = async (id) => {
   return await axios.delete(`${baseUrl}/${id}`, config)
 }
 // eslint-disable-next-line
-export default { getAll, create, updateBlog, removeBlog, setToken }
+export default { getAll, create, updateBlog, addComment, removeBlog, setToken }

@@ -83,4 +83,21 @@ export const likeBlog = (data) => {
   }
 }
 
+export const addComment = (data) => {
+  return async (dispatch) => {
+    try {
+      const response = await blogsService.addComment(data.id, data)
+      const updatedBlog = response.data
+      dispatch({
+        type: 'UPDATE_BLOG',
+        content: updatedBlog,
+      })
+      const message = `You've successfully added a comment on ' ${updatedBlog.title} by ${updatedBlog.author}`
+      handleSuccess(dispatch, message)
+    } catch (e) {
+      handleError(dispatch, e)
+    }
+  }
+}
+
 export default reducer
