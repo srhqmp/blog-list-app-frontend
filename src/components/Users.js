@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const UserList = ({ user }) => {
-  console.log('user:', user.username, user.blogs.length)
   return (
     <tr>
       <td>{user.name}</td>
@@ -13,7 +12,6 @@ const UserList = ({ user }) => {
 
 const Users = () => {
   const users = useSelector((state) => state.users)
-  console.log('users:', users)
   if (users) {
     return (
       <div>
