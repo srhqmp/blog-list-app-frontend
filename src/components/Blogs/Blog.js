@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from '../../reducers/blogsReducer'
-import { updateBlog, removeBlog } from '../../reducers/blogsReducer'
+import { likeBlog, removeBlog } from '../../reducers/blogsReducer'
 import { checkLogin } from '../../reducers/loginReducer'
 
 const Blog = () => {
@@ -25,7 +25,7 @@ const Blog = () => {
 
   const handleLikes = () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    dispatch(updateBlog(updatedBlog))
+    dispatch(likeBlog(updatedBlog))
   }
 
   const handleRemoveBlog = () => {
@@ -60,6 +60,23 @@ const Blog = () => {
     )
   }
 
+  const displayComments = (comments) => {
+    return (
+      <div>
+        <h3>comments</h3>
+        {comments ? (
+          <ul>
+            {comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
+        ) : (
+          'Be the first one to comment on this blog'
+        )}
+      </div>
+    )
+  }
+
   return (
     <div>
       <h2>{blog && blog.title}</h2>
@@ -74,6 +91,7 @@ const Blog = () => {
         <div>{blog && loggedinUser && displayLikes(blog.likes)}</div>
         <div>{blog && `added by ${blog.author}`}</div>
         {blog && loggedinUser && removeBtn()}
+        {blog && displayComments(blog.comments)}
       </div>
     </div>
   )
