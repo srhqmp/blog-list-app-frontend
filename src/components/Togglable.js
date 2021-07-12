@@ -1,7 +1,24 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 
+import Button from '@material-ui/core/Button'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import CreateIcon from '@material-ui/icons/Create'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(() => ({
+  cancelBtn: {
+    marginLeft: '5px',
+  },
+}))
+
 const Togglable = React.forwardRef((props, ref) => {
+  const classes = useStyles()
+
   const [visible, setVisible] = useState(false)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -16,14 +33,39 @@ const Togglable = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div>
-      <div style={hideWhenVisible}>
-        <button onClick={toggleVisible}>{props.buttonLabel}</button>
-      </div>
-      <div style={showWhenVisible}>
+    <div style={{ padding: '10px 20px' }}>
+      <span style={hideWhenVisible}>
+        <List>
+          <ListItem
+            button
+            activeStyle={{
+              backgroundColor: '#ecf0f1',
+            }}
+            onClick={toggleVisible}
+          >
+            <ListItemIcon>
+              {props.buttonLabel === 'login' ? (
+                <AccountCircleIcon />
+              ) : (
+                <CreateIcon />
+              )}
+            </ListItemIcon>
+            <ListItemText primary={props.buttonLabel} />
+          </ListItem>
+        </List>
+      </span>
+      <span style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisible}>cancel</button>
-      </div>
+        <Button
+          variant="contained"
+          onClick={toggleVisible}
+          color="primary"
+          style={showWhenVisible}
+          className={classes.cancelBtn}
+        >
+          Cancel
+        </Button>
+      </span>
     </div>
   )
 })

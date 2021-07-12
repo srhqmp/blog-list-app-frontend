@@ -8,7 +8,47 @@ import { initializeBlogs } from '../../reducers/blogsReducer'
 import Togglable from '../Togglable'
 import BlogForm from './BlogForm'
 
+import { Container } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const drawerWidth = 240
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  appBar: {
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+      marginTop: '20px'
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}))
+
 const Blogs = () => {
+  const classes = useStyles()
   const blogs = useSelector((state) => state.blogs)
   const loggedinUser = useSelector((state) => state.loggedinUser)
 
@@ -36,10 +76,12 @@ const Blogs = () => {
     ))
 
   return (
-    <div>
-      {loggedinUser && blogForm()}
-      {blogList()}
-    </div>
+    <Container className={classes.content, classes.appBar}>
+      <div className={classes.toolbar}>
+        {loggedinUser && blogForm()}
+        {blogList()}
+      </div>
+    </Container>
   )
 }
 

@@ -3,8 +3,18 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../../reducers/usersReducer'
+import { Container } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(10),
+  },
+}))
 
 const User = () => {
+  const classes = useStyles()
   const { id } = useParams()
   const dispatch = useDispatch()
 
@@ -31,13 +41,13 @@ const User = () => {
     }
   }
   return (
-    <div>
+    <Container className={classes.content}>
       <h3>{user && user.name}</h3>
       <div>
         <h4>added blogs</h4>
         {user && displayBlogs()}
       </div>
-    </div>
+    </Container>
   )
 }
 

@@ -1,3 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  margin: auto;
+  display: block;
+}
+
 h2 {
   color: blue;
 }

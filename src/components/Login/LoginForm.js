@@ -3,9 +3,22 @@ import { useDispatch } from 'react-redux'
 import { useField } from '../../hooks'
 import { login } from '../../reducers/loginReducer'
 
+import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(() => ({
+  button: {
+    padding: '5px 0px',
+  },
+  disp: {
+    display: 'inline',
+    padding: '50px 0px',
+  },
+}))
 
 const LoginForm = ({ loginFormRef }) => {
+  const classes = useStyles()
   const dispatch = useDispatch()
 
   const usernameInput = useField('text')
@@ -25,14 +38,28 @@ const LoginForm = ({ loginFormRef }) => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <form
+      onSubmit={handleLogin}
+      className={(classes.root, classes.disp)}
+      noValidate
+      autoComplete="off"
+    >
+      <div>Login User</div>
       <div>
-        username: {' '}
-        <input {...usernameInput} required />
+        <TextField
+          label="Username"
+          id="standard-required"
+          {...usernameInput}
+          required
+        />
       </div>
       <div>
-        password: {' '}
-        <input {...passwordInput} required />
+        <TextField
+          label="Password"
+          id="standard-required"
+          {...passwordInput}
+          required
+        />
       </div>
       <Button type="submit" color="primary" variant="contained">
         login

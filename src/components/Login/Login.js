@@ -4,9 +4,22 @@ import Togglable from '../Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkLogin, logout } from '../../reducers/loginReducer'
 import { handleSuccess } from '../../reducers/notificationReducer'
-import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
+const useStyles = makeStyles(() => ({
+  logout: {
+    marginLeft: '20px',
+  },
+}))
 
 const Login = () => {
+  const classes = useStyles()
   const loggedinUser = useSelector((state) => state.loggedinUser)
   const dispatch = useDispatch()
 
@@ -21,12 +34,23 @@ const Login = () => {
   }
 
   const userLogout = () => (
-    <span>
-      <span>{`${loggedinUser.name} logged in`}</span>{' '}
-      <Button onClick={handleLogout} color="primary" variant="contained">
-        logout
-      </Button>
-    </span>
+    <div>
+      <div className={classes.logout}>{`${loggedinUser.name} logged in`}</div>{' '}
+      <List>
+        <ListItem
+          button
+          activeStyle={{
+            backgroundColor: '#ecf0f1',
+          }}
+          onClick={handleLogout}
+        >
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItem>
+      </List>
+    </div>
   )
 
   const loginFormRef = useRef()
@@ -36,6 +60,7 @@ const Login = () => {
     </Togglable>
   )
 
+  console.log('loggedinuser:', loggedinUser)
   return <span>{loggedinUser ? userLogout() : loginForm()}</span>
 }
 

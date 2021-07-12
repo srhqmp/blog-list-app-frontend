@@ -6,11 +6,29 @@ import Blogs from './components/Blogs/Blogs'
 import Blog from './components/Blogs/Blog'
 import Users from './components/Users/Users'
 import User from './components/Users/User'
-import { Container } from '@material-ui/core'
+
+import { createTheme, ThemeProvider } from '@material-ui/core'
+import { purple } from '@material-ui/core/colors'
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#fefefe',
+    },
+    secondary: purple,
+  },
+  typography: {
+    fontFamily: 'Quicksand',
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  },
+})
 
 const App = () => {
   return (
-    <Container>
+    <ThemeProvider theme={theme}>
       <Router>
         <Navigation />
         <h2>blog app</h2>
@@ -30,7 +48,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-    </Container>
+    </ThemeProvider>
   )
 }
 
