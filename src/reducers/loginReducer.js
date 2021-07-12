@@ -30,6 +30,9 @@ export const checkLogin = () => {
       } else {
         window.localStorage.clear()
         blogService.setToken(null)
+        dispatch({
+          type: 'LOGOUT',
+        })
       }
     } catch (e) {
       handleError(dispatch, e)

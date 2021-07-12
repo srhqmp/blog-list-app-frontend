@@ -13,7 +13,7 @@ const User = () => {
   }, [])
 
   const users = useSelector((state) => state.users)
-  const user = users.find((user) => user.id === id)
+  const user = users && users.find((user) => user.id === id)
 
   const displayBlogs = () => {
     if (user.blogs.length) {

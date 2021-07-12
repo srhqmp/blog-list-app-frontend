@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../../reducers/usersReducer'
 
 const UserList = ({ user }) => {
-  console.log(user)
   return (
     <tr>
       <td>
