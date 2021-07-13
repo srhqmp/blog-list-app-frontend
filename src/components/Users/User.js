@@ -5,11 +5,45 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../../reducers/usersReducer'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { Typography } from '@material-ui/core'
+
+const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  appBar: {
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+      marginTop: '20px',
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+  },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(10),
+    padding: theme.spacing(3),
+  },
+  listStyle: {
+    textDecoration: 'none',
+    marginBottom: '5px',
   },
 }))
 
@@ -31,7 +65,11 @@ const User = () => {
         <ul>
           {user.blogs.map((blog) => (
             <li key={blog.id}>
-              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              <Typography variant="h6">
+                <Link to={`/blogs/${blog.id}`} className={classes.listStyle}>
+                  {blog.title}
+                </Link>
+              </Typography>
             </li>
           ))}
         </ul>
@@ -41,7 +79,7 @@ const User = () => {
     }
   }
   return (
-    <Container className={classes.content}>
+    <Container className={(classes.content, classes.appBar)}>
       <h3>{user && user.name}</h3>
       <div>
         <h4>added blogs</h4>

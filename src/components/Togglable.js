@@ -33,16 +33,10 @@ const Togglable = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div style={{ padding: '10px 20px' }}>
+    <div style={{ margin: '30px 20px' }}>
       <span style={hideWhenVisible}>
         <List>
-          <ListItem
-            button
-            activeStyle={{
-              backgroundColor: '#ecf0f1',
-            }}
-            onClick={toggleVisible}
-          >
+          <ListItem button onClick={toggleVisible}>
             <ListItemIcon>
               {props.buttonLabel === 'login' ? (
                 <AccountCircleIcon />

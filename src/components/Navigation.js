@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
@@ -72,9 +71,9 @@ const Navigation = (props) => {
         <ListItem
           button
           component={Login}
-          activeStyle={{
-            backgroundColor: '#ecf0f1',
-          }}
+          // activeStyle={{
+          //   backgroundColor: '#ecf0f1',
+          // }}
         >
           <ListItemIcon>
             <PeopleIcon />
@@ -87,9 +86,9 @@ const Navigation = (props) => {
           component={NavLink}
           to="/"
           exact
-          activeStyle={{
-            backgroundColor: '#ecf0f1',
-          }}
+          // activeStyle={{
+          //   backgroundColor: '#ecf0f1',
+          // }}
         >
           <ListItemIcon>
             <ListIcon />
@@ -101,9 +100,9 @@ const Navigation = (props) => {
           component={NavLink}
           to="/users"
           exact
-          activeStyle={{
-            backgroundColor: '#ecf0f1',
-          }}
+          // activeStyle={{
+          //   backgroundColor: '#ecf0f1',
+          // }}
         >
           <ListItemIcon>
             <PeopleIcon />
@@ -170,17 +169,6 @@ const Navigation = (props) => {
       </nav>
     </div>
   )
-  // return (
-  //   <Typography variant="h5" color="primary" gutterBottom align="left">
-  //     <Link to={'/'} style={{ textDecoration: 'none' }}>
-  //       blogs
-  //     </Link>{' '}
-  //     <Link to={'/users'} style={{ textDecoration: 'none' }}>
-  //       users
-  //     </Link>{' '}
-  //     <Login />
-  //   </Typography>
-  // )
 }
 
 export default Navigation

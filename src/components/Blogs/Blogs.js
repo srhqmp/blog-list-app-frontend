@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
-      marginTop: '20px'
+      marginTop: '20px',
     },
   },
   menuButton: {
@@ -65,7 +65,7 @@ const Blogs = () => {
   const blogFormRef = useRef()
 
   const blogForm = () => (
-    <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+    <Togglable buttonLabel='create new blog' ref={blogFormRef}>
       <BlogForm blogFormRef={blogFormRef} />
     </Togglable>
   )
@@ -76,11 +76,9 @@ const Blogs = () => {
     ))
 
   return (
-    <Container className={classes.content, classes.appBar}>
-      <div className={classes.toolbar}>
-        {loggedinUser && blogForm()}
-        {blogList()}
-      </div>
+    <Container className={(classes.content, classes.appBar)}>
+      {loggedinUser && blogForm()}
+      <div className={classes.toolbar}>{blogList()}</div>
     </Container>
   )
 }

@@ -2,12 +2,15 @@ import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs } from '../../reducers/blogsReducer'
-import { likeBlog, removeBlog, addComment } from '../../reducers/blogsReducer'
+import {
+  initializeBlogs,
+  likeBlog,
+  removeBlog,
+  addComment,
+} from '../../reducers/blogsReducer'
 import { checkLogin } from '../../reducers/loginReducer'
 import { useField } from '../../hooks'
-
-import { Container } from '@material-ui/core'
+import { Container, TextField, Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const drawerWidth = 240
@@ -29,17 +32,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '50px',
     },
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(10),
@@ -49,11 +42,12 @@ const useStyles = makeStyles((theme) => ({
 const Blog = () => {
   const classes = useStyles()
   const { id } = useParams()
-  const loggedinUser = useSelector((state) => state.loggedinUser)
+
   const dispatch = useDispatch()
   const history = useHistory()
   const commentInput = useField('text')
 
+  const loggedinUser = useSelector((state) => state.loggedinUser)
   const blogs = useSelector((state) => state.blogs)
   const blog = blogs.find((blog) => blog.id === id)
 
@@ -71,9 +65,14 @@ const Blog = () => {
   }
 
   const likeBtn = () => (
-    <button id="likeButton" onClick={handleLikes}>
+    <Button
+      id="likeButton"
+      onClick={handleLikes}
+      variant="contained"
+      color="primary"
+    >
       like
-    </button>
+    </Button>
   )
 
   const displayLikes = (likes) => {
@@ -96,9 +95,14 @@ const Blog = () => {
 
   const removeBtn = () => {
     return (
-      <button id="removeButton" onClick={handleRemoveBlog}>
+      <Button
+        id="removeButton"
+        variant="contained"
+        color="primary"
+        onClick={handleRemoveBlog}
+      >
         remove
-      </button>
+      </Button>
     )
   }
 
@@ -115,8 +119,21 @@ const Blog = () => {
   const inputAddComment = () => {
     return (
       <form onSubmit={handleComment}>
-        <input {...commentInput} required />
-        <button>add comment</button>
+        <div>
+          <TextField
+            {...commentInput}
+            required
+            id="outlined-multiline-static"
+            label="Add Comment"
+            multiline
+            rows={4}
+            defaultValue="Default Value"
+            variant="outlined"
+          />
+        </div>
+        <Button variant="contained" color="primary" type="submit">
+          add comment
+        </Button>
       </form>
     )
   }
@@ -142,7 +159,9 @@ const Blog = () => {
   return (
     <Container className={(classes.content, classes.appBar)}>
       <div className={classes.toolbar}>
-        <h2>{blog && blog.title}</h2>
+        <Typography variant="h4" component="h2">
+          {blog && blog.title}
+        </Typography>
         <div>
           <div>
             {blog && (

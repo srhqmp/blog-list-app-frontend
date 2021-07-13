@@ -4,8 +4,41 @@ import { useDispatch } from 'react-redux'
 import { useField } from '../../hooks'
 
 import { addBlog } from '../../reducers/blogsReducer'
+import TextField from '@material-ui/core/TextField'
+import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(() => ({
+  button: {
+    padding: '5px 0px',
+  },
+  disp: {
+    display: 'inline',
+    padding: '50px 0px',
+  },
+  authorInput: {
+    position: 'relative',
+    left: '-20px',
+    width: '60%',
+    marginBottom: '10px',
+    minWidth: '300px',
+  },
+  urlInput: {
+    position: 'relative',
+    left: '5px',
+    width: '60%',
+    marginBottom: '20px',
+    minWidth: '300px',
+  },
+  titleField: {
+    width: '60%',
+    marginBottom: '10px',
+    minWidth: '300px',
+  },
+}))
 
 const BlogForm = ({ blogFormRef }) => {
+  const classes = useStyles()
   const dispatch = useDispatch()
 
   const titleInput = useField('text')
@@ -28,21 +61,44 @@ const BlogForm = ({ blogFormRef }) => {
   }
 
   return (
-    <form id="blogForm" onSubmit={handleNewBlog}>
+    <form
+      id="blogForm"
+      onSubmit={handleNewBlog}
+      className={(classes.root, classes.disp)}
+      noValidate
+      autoComplete="off"
+    >
       <h2>create new</h2>
       <div>
         title:
-        <input {...titleInput} required />
+        <TextField
+          label="Title"
+          className={classes.titleField}
+          {...titleInput}
+          required
+        />
       </div>
       <div>
         author:
-        <input {...authorInput} required />
+        <TextField
+          label="Author"
+          className={classes.authorInput}
+          {...authorInput}
+          required
+        />
       </div>
       <div>
         url:
-        <input {...urlInput} required />
+        <TextField
+          label="URL"
+          className={classes.urlInput}
+          {...urlInput}
+          required
+        />
       </div>
-      <button>submit</button>
+      <Button type="submit" color="primary" variant="contained">
+        create
+      </Button>
     </form>
   )
 }

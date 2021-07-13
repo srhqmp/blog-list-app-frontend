@@ -39,9 +39,9 @@ const Login = () => {
       <List>
         <ListItem
           button
-          activeStyle={{
-            backgroundColor: '#ecf0f1',
-          }}
+          // activeStyle={{
+          //   backgroundColor: '#ecf0f1',
+          // }}
           onClick={handleLogout}
         >
           <ListItemIcon>
@@ -55,12 +55,10 @@ const Login = () => {
 
   const loginFormRef = useRef()
   const loginForm = () => (
-    <Togglable buttonLabel="login" ref={loginFormRef}>
+    <Togglable buttonLabel='login' ref={loginFormRef}>
       <LoginForm loginFormRef={loginFormRef} />
     </Togglable>
   )
-
-  console.log('loggedinuser:', loggedinUser)
   return <span>{loggedinUser ? userLogout() : loginForm()}</span>
 }
 

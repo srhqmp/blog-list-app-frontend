@@ -37,9 +37,10 @@ export const setNotification = (content, time) => {
 
 export const handleError = (dispatch, e) => {
   const message = {
-    message: e.response.data,
+    message: e.response.data || e.response,
     classification: 'error',
   }
+  console.log('error:', message)
   dispatch(setNotification(message, 5))
 }
 

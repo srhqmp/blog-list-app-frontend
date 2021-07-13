@@ -31,7 +31,6 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Router>
         <Navigation />
-        <h2>blog app</h2>
         <Notification />
         <Switch>
           <Route exact path="/">

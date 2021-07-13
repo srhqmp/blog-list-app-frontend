@@ -48,7 +48,6 @@ const LoginForm = ({ loginFormRef }) => {
       <div>
         <TextField
           label="Username"
-          id="standard-required"
           {...usernameInput}
           required
         />
@@ -56,7 +55,6 @@ const LoginForm = ({ loginFormRef }) => {
       <div>
         <TextField
           label="Password"
-          id="standard-required"
           {...passwordInput}
           required
         />
